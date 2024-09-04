@@ -4,7 +4,7 @@ An ETL for reading from the Hugging Face API spaces endpoint, doing some minor t
 The Parquet file is then pushed to a dataset on the Hugging Face Hub where it is showed in a Space, but can also be used by anyone in the community for futher analysis.
 """
 
-from huggingface_hub import list_spaces, space_info, upload_file
+from huggingface_hub import list_spaces, space_info, upload_file, login
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
@@ -37,6 +37,9 @@ def load_into_dataframe(space, space_list):
             for domain in space.runtime.raw["domains"]
             if domain["isCustom"]
         ]
+        # if there are no custom domains set it to None
+        if len(custom_domains) == 0:
+            custom_domains = None
     except KeyError:
         custom_domains = None
 
@@ -102,6 +105,12 @@ def push_to_hub(df):
     """
     Push the Parquet file to the Hugging Face Hub as a dataset
     """
+    # login first
+    try:
+        login(token=os.getenv("HF_TOKEN"), write_permission=True)
+    except ValueError:
+        print("Please set the HF_TOKEN environment variable")
+
     df.to_parquet("spaces.parquet")
     upload_file(
         path_or_fileobj="spaces.parquet",
