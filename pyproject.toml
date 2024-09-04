@@ -10,6 +10,7 @@ readme = "README.md"
 python = "^3.12"
 huggingface-hub = "^0.24.6"
 pandas = "^2.2.2"
+pyarrow = "^17.0.0"
 
 
 [build-system]
