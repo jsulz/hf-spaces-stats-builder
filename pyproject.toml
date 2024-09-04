@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "hf-spaces-stats-builder"
+version = "0.1.0"
+description = "A dataset builder for stats about Hugging Face Spaces."
+authors = ["jsulz <j.sulzdorf@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+huggingface-hub = "^0.24.6"
+pandas = "^2.2.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
